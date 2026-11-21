@@ -71,7 +71,7 @@ Ecamm also has its own scripting commands (scenes, overlays, comments, viewers a
 
 ## Related projects
 
-- **[ecamm-mcp](https://github.com/guycochran/ecamm-mcp)**: run Ecamm Live from a chat with Claude through Ecamm's Remote Control (scenes, overlays, mute, markers, going live). Use it while you are live; use ecamm-runner for what Remote Control cannot do: scheduling broadcasts with a thumbnail, Facebook-only broadcasts, and hands-off replays that rewind, start and end on their own.
+- **[ecamm-mcp](https://github.com/guycochran/ecamm-mcp)** (archived by its author, still installable): run Ecamm Live from a chat with Claude through Ecamm's Remote Control (scenes, overlays, mute, markers, going live). Use it while you are live; use ecamm-runner for what Remote Control cannot do: scheduling broadcasts with a thumbnail, Facebook-only broadcasts, and hands-off replays that rewind, start and end on their own.
 - **[companion-module-ecamm-live](https://github.com/bitfocus/companion-module-ecamm-live)**: Bitfocus Companion buttons for Ecamm, with notes on the Remote Control protocol.
 
 This is an independent project, not made by or affiliated with Ecamm.
