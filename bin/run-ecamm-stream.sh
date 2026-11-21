@@ -8,7 +8,7 @@
 #   0. video        bin/ecamm-load-video.py FILE        (skip when the video is already in the scene)
 #                   bin/ecamm-video-transport.py cue     (0:00, paused; a loaded video starts playing)
 #   1. connections  bin/ecamm-broadcast-form.py check [--only facebook]
-#   2. mic muted    bin/ecamm-mic-mute.py mute          (a replay must not carry the room; skipped with no "mic" setting)
+#   2. mic muted    bin/ecamm-mic-mute.py mute          (a replay must not carry the room)
 #   3. end video    bin/ecamm-end-behavior.py set end-broadcast   (takes the cursor ~2s; waits while you are busy)
 #   4. form         bin/ecamm-broadcast-form.py fill ... [--now] [--only facebook] [--submit]
 #   5. after        scheduled: LinkedIn post + Facebook event links from Ecamm's saved permalinks.
@@ -57,11 +57,7 @@ step "1. Destinations ($([ -n "$ONLY" ] && echo "Facebook only" || echo "Faceboo
 python3 "$FORM" check ${ONLY_ARGS[@]+"${ONLY_ARGS[@]}"} || fail "connections"
 
 step "2. Mic muted"
-if python3 -c "import sys; sys.path.insert(0, '$HERE'); import ecamm_runner_settings as s; sys.exit(0 if s.load()['mic'] else 1)"; then
-  python3 "$HERE/ecamm-mic-mute.py" mute || fail "mic mute"
-else
-  echo "   skipped: no \"mic\" in your settings"
-fi
+python3 "$HERE/ecamm-mic-mute.py" mute || fail "mic mute"
 
 step "3. When Video Ends = End Broadcast"
 echo "   (waits up to 10 minutes for a natural pause before taking the mouse ~2s)"

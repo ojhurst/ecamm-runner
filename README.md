@@ -19,7 +19,7 @@ That one command:
 ## Requirements
 
 - macOS with Ecamm Live (tested on 4.6.3), signed in to the destinations you stream to.
-- Your terminal (or whatever runs the script) allowed under System Settings > Privacy & Security > **Accessibility** and **Screen Recording**.
+- Your terminal (or whatever runs the script) allowed under System Settings > Privacy & Security > **Accessibility** and **Screen Recording**, and allowed to control Ecamm Live (macOS asks once, under **Automation**).
 - Python 3 with `pyobjc-framework-Quartz` and `Pillow`: `python3 -m pip install -r requirements.txt`
 
 ## Settings
@@ -28,13 +28,11 @@ Create `~/.config/ecamm-runner/settings.json`:
 
 ```json
 {
-  "account_name": "Jane Doe",
-  "mic": "RODECaster Pro II Chat"
+  "account_name": "Jane Doe"
 }
 ```
 
 - `account_name`: the name shown on your destination pills in Create New Broadcast. Needed for `--only facebook`, which removes LinkedIn for one broadcast and adds it back afterward.
-- `mic`: the row name in Ecamm's **Sound Levels** window. Leave it out to skip muting.
 - `end_menu_offsets` (optional): where the When Video Ends menu items sit, in points below the control. The defaults fit Ecamm 4.6.
 
 ## Usage
@@ -56,7 +54,9 @@ Each step is also its own script in `bin/` (`--help` or no arguments prints usag
 
 - `ecamm-load-video.py FILE`: load a video as the scene source
 - `ecamm-video-transport.py status|cue|play|pause`: control the scene video without the mouse
-- `ecamm-mic-mute.py status|mute|unmute|toggle`: the mic's MUTE button in Sound Levels
+- `ecamm-mic-mute.py status|mute|unmute|toggle`: Ecamm's main mic mute
+
+Ecamm also has its own scripting commands (scenes, overlays, comments, viewers and more). [docs/how-it-works.md](docs/how-it-works.md) lists the useful ones.
 - `ecamm-end-behavior.py status|set end-broadcast|do-nothing|loop|next-scene`: When Video Ends
 - `ecamm-broadcast-form.py check|fill|restore`: the Create New Broadcast form
 

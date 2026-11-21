@@ -2,7 +2,6 @@
 
 {
   "account_name": "Jane Doe",        # the name on your Facebook and LinkedIn destination pills
-  "mic": "RODECaster Pro II Chat",   # the mic row in Ecamm's Sound Levels window; leave out to skip muting
   "end_menu_offsets": {"do-nothing": 45, "loop": 69, "next-scene": 93, "end-broadcast": 141}
 }
 
@@ -15,7 +14,6 @@ import json, os
 PATH = os.path.expanduser(os.environ.get("ECAMM_RUNNER_SETTINGS", "~/.config/ecamm-runner/settings.json"))
 DEFAULTS = {
     "account_name": "",
-    "mic": "",
     "end_menu_offsets": {"do-nothing": 45, "loop": 69, "next-scene": 93, "end-broadcast": 141},
 }
 

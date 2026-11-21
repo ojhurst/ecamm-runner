@@ -64,11 +64,11 @@ def fmt(s):
 
 
 def set_playing(want):
-    for _ in range(3):
+    for _ in range(5):  # a press can be lost while a just-loaded video is still starting
         if playing() == want:
             return True
         press("Play/Pause Video")
-        time.sleep(0.5)
+        time.sleep(1)
     return playing() == want
 
 

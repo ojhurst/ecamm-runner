@@ -3,6 +3,25 @@
 
 This page lists what each script looks for in Ecamm Live, so you can fix a script when an Ecamm update moves something. Everything here was worked out on Ecamm Live 4.6 on macOS.
 
+## Ecamm's own scripting commands (use these first)
+
+Ecamm Live ships an AppleScript dictionary of about 150 commands, the same hooks its Stream Deck plugin uses. Read it with `sdef "/Applications/Ecamm Live.app"` or open the app in Script Editor's Library. macOS asks once to allow controlling Ecamm. Every command is `tell application "Ecamm Live" to <command>`. The ones ecamm-runner uses or tested:
+
+| Command | What it does |
+|---|---|
+| `get info` | One record: mic mute, volumes, current scene, main button label (`New`, or `Finish` while live), viewer count, preview mode |
+| `get mute` / `set mute` | Read the main mic mute (`yes`/`no`) / toggle it. Same mute as the MUTE button in Sound Levels |
+| `set video id "<path>"` | Switch the scene to Video File and start that file playing |
+| `get video list` | Recent video files, newest first |
+| `get current mode` | `cam`, `screen` or `video` |
+| `get channels` | Your destinations, each with a UUID and a title like `Jane Doe (Facebook)` |
+| `set click button channel "<uuid>" title "…" description "…"` | Start (or stop) a broadcast on one destination with its own title and description. Not yet used by ecamm-runner: testing it starts a real broadcast |
+| `set scene name "<scene>"`, `next scene`, `get scene list` | Scenes |
+| `set overlay`, `set overlay text`, `get overlay list` | Overlays, including the words in a text overlay |
+| `show latest comment`, `post comment`, `get viewers` | Live comments and viewers |
+
+What the dictionary does not cover: the Create New Broadcast form for scheduling, When Video Ends, rewinding the scene video, and file choosers. Those are the parts below.
+
 ## Seeing Ecamm without bringing it forward
 
 - **You can capture a window by its ID, even with other windows on top of it.** `screencapture -x -o -l <id> out.png` grabs the window's own pixels. Find the ID with Quartz `CGWindowListCopyWindowInfo`. The owner name is `Ecamm`, not `Ecamm Live`.
@@ -10,8 +29,8 @@ This page lists what each script looks for in Ecamm Live, so you can fix a scrip
 
 ## The video in the scene (`ecamm-load-video.py`, `ecamm-video-transport.py`)
 
-- Source > Video File > Choose File... opens the file chooser as a sheet on the main window. Source > Video File > Recent Items lists the newest file first, which proves the file loaded.
-- **A loaded video starts playing right away.**
+- `set video id "<path>"` loads the file; `get video list` (newest first) and `get current mode` prove it took.
+- **A loaded video starts playing right away**, and a Play/Pause press can be lost for a second or two while it starts, so the transport retries.
 - The preview's hover-only controls stay in the main window's Accessibility tree even while hidden. They include `Play/Pause Video`, `Rewind Video`, `Fast Forward Video`, `Movie End Behavior Menu` and `Movie Scrub Bar`. Each appears as `AXUnknown` at position `0,1080` with size `0,0`. **AXPress works on Play/Pause and Rewind while they are hidden.** Each Rewind press jumps back about 30 seconds.
 - **The proof for play and pause** is the scene name element, for example `New Scene 02:28`. While the video plays, it counts down the time left. During a live broadcast, a separate `LIVE 0:18` element counts the broadcast time up. Skip that element, or a paused video looks like it is playing.
 
@@ -31,7 +50,7 @@ This page lists what each script looks for in Ecamm Live, so you can fix a scrip
 
 ## The mic (`ecamm-mic-mute.py`)
 
-- The MUTE button on your mic's row in the Sound Levels window responds to an Accessibility press. Accessibility does not report whether it is muted, so the script reads that from a capture of the window. A muted button is bright white (brightness about 254) and a live one is dim gray (about 182). The cutoff is 220.
+- `get mute` and `set mute` handle it. (Before the dictionary was found, the script pressed the MUTE button in Sound Levels through Accessibility and read the state from a window capture: muted is bright white, about 254 brightness; live is dim gray, about 182.)
 
 ## Create New Broadcast (`ecamm-broadcast-form.py`)
 
